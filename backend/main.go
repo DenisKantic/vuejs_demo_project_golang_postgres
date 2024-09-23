@@ -1,25 +1,36 @@
 package main
 
 import (
-  "fmt"
+	"backend/createListItem"
+	"fmt"
+	"log"
+	"net/http"
 )
 
-//TIP To run your code, right-click the code and select <b>Run</b>. Alternatively, click
-// the <icon src="AllIcons.Actions.Execute"/> icon in the gutter and select the <b>Run</b> menu item from here.
+func corsMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "localhost")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
-func main() {
-  //TIP Press <shortcut actionId="ShowIntentionActions"/> when your caret is at the underlined or highlighted text
-  // to see how GoLand suggests fixing it.
-  s := "gopher"
-  fmt.Println("Hello and welcome, %s!", s)
+		// Handle preflight OPTIONS request
+		if r.Method == http.MethodOptions {
+			return
+		}
 
-  for i := 1; i <= 5; i++ {
-	//TIP You can try debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-	// for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>. To start your debugging session, 
-	// right-click your code in the editor and select the <b>Debug</b> option. 
-	fmt.Println("i =", 100/i)
-  }
+		next.ServeHTTP(w, r)
+	})
 }
 
-//TIP See GoLand help at <a href="https://www.jetbrains.com/help/go/">jetbrains.com/help/go/</a>.
-// Also, you can try interactive lessons for GoLand by selecting 'Help | Learn IDE Features' from the main menu.
+func setupRoutes() {
+	mux := http.NewServeMux() // function for setting up API routes
+
+	// API ROUTE FOR CREATING LIST ITEM
+	mux.HandleFunc("/createListItem", createListItem.CreateListItem)
+	log.Fatal(http.ListenAndServe(":8080", corsMiddleware(mux)))
+}
+func main() {
+
+	fmt.Println("Server is running on 8080 port")
+	setupRoutes()
+}
