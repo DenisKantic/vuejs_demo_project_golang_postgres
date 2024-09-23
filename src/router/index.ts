@@ -18,6 +18,14 @@ const router = createRouter({
       meta: {
         title: 'Home' // tab title on browser
       }
+    },
+    {
+      path: '/addProduct',
+      name: 'addProduct',
+      component: () => import('../components/addProduct/AddProduct.vue'),
+      meta: {
+        title: 'Add Product'
+      }
     }
   ]
 })
