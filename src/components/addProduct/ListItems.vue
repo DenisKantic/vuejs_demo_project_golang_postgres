@@ -1,15 +1,14 @@
 <template>
   <div class="w-full">
-    <h1>List of Items</h1>
-    <table class="table w-full mt-10" v-if="items.length > 0">
+    <table class="table w-full mt-10 text-md" v-if="items.length > 0">
       <thead>
         <tr>
           <th>ID</th>
           <th>Title</th>
           <th>Price</th>
           <th>Quantity</th>
-          <th>Created At</th>
-          <th>Updated At</th>
+          <th>Created</th>
+          <th>Updated</th>
           <th>Actions</th>
           <!-- Added header for actions -->
         </tr>
