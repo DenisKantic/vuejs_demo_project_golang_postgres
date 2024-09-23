@@ -1,8 +1,11 @@
 <template>
-  <div class="navbar fixed bg-gray-300 shadow-md px-14">
+  <div class="navbar fixed bg-[#6870f0] shadow-md px-14">
     <div class="flex-1">
-      <RouterLink to="/" class="text-xl text-black font-bold">Home</RouterLink>
+      <RouterLink to="/" class="text-xl text-white font-bold"
+        ><i class="fas fa-home mr-2 text-xl"></i>Home</RouterLink
+      >
     </div>
+
     <div class="flex-none gap-2">
       <div class="dropdown dropdown-end">
         <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
