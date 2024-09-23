@@ -1,39 +1,28 @@
-# demo_vuejs_project
+# VueJS Product List Item Simple App
 
-This template should help get you started developing with Vue 3 in Vite.
+Simple CRUD project done for interview purposes.
 
-## Recommended IDE Setup
+App has following functions: Add Products, Geting all products, deleting item, updating and searching via text search input.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Requirements to start project
 
-## Type Support for `.vue` Imports in TS
+- NodeJS (18 or higher)
+- VueCLI
+- Docker (for starting postgres and golang backend)
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## Steps for starting this project
 
-## Customize configuration
+### 1. Cloning project
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+Clone it via this link: git@github.com:DenisKantic/vuejs_demo_project_golang_postgres.git (if you are using SSH github)
 
-## Project Setup
+If you don't use SSH connection type, you can use simple https link:
+https://github.com/DenisKantic/vuejs_demo_project_golang_postgres.git
 
-```sh
-npm install
-```
+### 2. Setting up project
 
-### Compile and Hot-Reload for Development
+After cloning the "main" branch, run the command
 
-```sh
-npm run dev
-```
+<b>npm install</b>
 
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+to install node modules.
