@@ -1,0 +1,40 @@
+services:
+  api:
+    build:
+      context: ./backend
+      dockerfile: go.dockerfile
+    ports:
+      - '8080:8080'
+    depends_on:
+      - postgres
+    networks:
+      - my_network
+    develop:
+      watch:
+        - action: rebuild
+          path: ./backend
+          target: /app/backend
+          ignore:
+            - vendor/
+            - .git/
+
+  postgres:
+    image: postgres:16
+    container_name: productdata
+    environment:
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: productdb
+    ports:
+      - '5436:5436'
+    volumes:
+      - productdata:/var/lib/postgresql/data
+    networks:
+      - my_network
+
+networks:
+  my_network:
+
+volumes:
+  productdata:
+    external: true
