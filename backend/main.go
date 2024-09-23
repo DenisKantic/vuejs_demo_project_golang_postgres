@@ -2,6 +2,7 @@ package main
 
 import (
 	"backend/createListItem"
+	"backend/deleteListItem"
 	"backend/getListItems"
 	"fmt"
 	"log"
@@ -31,6 +32,9 @@ func setupRoutes() {
 
 	// API ROUTE FOR GETING ALL ITEMS VIA PROCEDURE
 	mux.HandleFunc("/getListItems", getListItems.GetAllItems)
+
+	// API ROUTE FOR DELETING ITEM VIA ID QUERY PARAMETER
+	mux.HandleFunc("/deleteItem", deleteListItem.DeleteItem)
 	log.Fatal(http.ListenAndServe(":8080", corsMiddleware(mux)))
 }
 func main() {

@@ -36,10 +36,14 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue'
 import axios from 'axios'
+import { useToast } from 'vue-toast-notification'
 
 export default defineComponent({
   name: 'ListItems',
   setup() {
+    const toast = useToast({
+      position: 'top-right'
+    })
     const items = ref<
       Array<{
         id: number
@@ -70,10 +74,12 @@ export default defineComponent({
 
     const deleteItem = async (id: number) => {
       try {
-        await axios.delete(`http://localhost:8080/deleteItem/${id}`) // Adjust the URL as needed
+        await axios.delete(`http://localhost:8080/deleteItem?id=${id}`) // using "ID" as query parameter
         items.value = items.value.filter((item) => item.id !== id) // Update the local state
+        toast.success('List item deleted')
         console.log('Deleted item with ID:', id)
       } catch (error) {
+        toast.error('Error while deleting item')
         console.error('Error deleting item:', error)
       }
     }
