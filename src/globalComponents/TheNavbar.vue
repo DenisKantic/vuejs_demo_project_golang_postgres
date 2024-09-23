@@ -23,7 +23,7 @@
           <li>
             <RouterLink to="myProfile" class="justify-between"> My Profile </RouterLink>
           </li>
-          <li><a>Add Product</a></li>
+          <li><RouterLink to="addProduct">Add Product</RouterLink></li>
           <li><a>Logout</a></li>
         </ul>
       </div>
