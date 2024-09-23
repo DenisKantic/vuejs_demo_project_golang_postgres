@@ -3,9 +3,11 @@ package createListItem
 import (
 	"backend/db_connection"
 	"database/sql"
+	"encoding/json"
 	"fmt"
 	_ "github.com/lib/pq"
 	"net/http"
+	"strconv"
 )
 
 func CreateListItem(w http.ResponseWriter, r *http.Request) {
@@ -20,23 +22,36 @@ func CreateListItem(w http.ResponseWriter, r *http.Request) {
 
 	// extracting form values
 	title := r.FormValue("title")
-	price := r.FormValue("price")
+	priceStr := r.FormValue("price")
 	description := r.FormValue("description")
-	quantity := r.FormValue("quantity")
+	quantityStr := r.FormValue("quantity")
 
 	missingFields := []string{}
 
 	if title == "" {
 		missingFields = append(missingFields, "Title is empty")
 	}
-	if price == "" {
-		missingFields = append(missingFields, "Price is empty")
-	}
 	if description == "" {
 		missingFields = append(missingFields, "Description is empty")
 	}
-	if quantity == "" {
-		missingFields = append(missingFields, "Quantity is empty")
+	// Convert quantity and price to integers
+	quantity, err := strconv.Atoi(quantityStr)
+	if err != nil || quantity <= 0 {
+		missingFields = append(missingFields, "Quantity must be greater than zero")
+	}
+
+	price, err := strconv.Atoi(priceStr)
+	if err != nil || price <= 0 {
+		missingFields = append(missingFields, "Price must be greater than zero")
+	}
+
+	if len(missingFields) > 0 {
+		// Return the error messages as JSON
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"error": missingFields,
+		})
+		return
 	}
 
 	// starting connection with database

@@ -10,17 +10,22 @@
         placeholder="Search here"
         class="input col-span-5 bg-[#f1f1fb] input-primary w-full"
       />
-      <h1 class="btn bg-[#6870f0] text-white col-span-1 text-xl">
+      <RouterLink to="/addProduct" class="btn bg-[#6870f0] text-white col-span-1 text-xl">
         Add Product <i class="fa-solid fa-plus text-xl"></i>
-      </h1>
+      </RouterLink>
     </div>
+    <ListComponent />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import ListComponent from '../addProduct/ListItems.vue'
 
 export default defineComponent({
-  name: 'myProfile' // Use a unique name for your component
+  name: 'myProfile', // Use a unique name for your component
+  components: {
+    ListComponent // Declare the ListItem component
+  }
 })
 </script>
