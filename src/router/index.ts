@@ -24,7 +24,15 @@ const router = createRouter({
       name: 'addProduct',
       component: () => import('../components/addProduct/AddProduct.vue'),
       meta: {
-        title: 'Add Product'
+        title: 'Add Item'
+      }
+    },
+    {
+      path: '/editItem/:id',
+      name: 'editItem',
+      component: () => import('../components/editProduct/EditProductItem.vue'),
+      meta: {
+        title: 'Edit Item'
       }
     }
   ]

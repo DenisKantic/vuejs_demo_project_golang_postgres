@@ -1,39 +1,109 @@
-# demo_vuejs_project
+# VueJS Product List Item Simple App
 
-This template should help get you started developing with Vue 3 in Vite.
+Simple CRUD project done for interview purposes.
 
-## Recommended IDE Setup
+App has following functions: Add Products, Geting all products, deleting item, updating and searching via text search input.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+Tools which are used here:
 
-## Type Support for `.vue` Imports in TS
+<b>Frontend:</b> VueJS, Tailwind, Toast (nofitications) DaisyUI, Fontawesome, axios </br>
+<b>Backend: </b> Golang (Go) </br>
+<b>Database: </b> PostgreSQL
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## Requirements to start project
 
-## Customize configuration
+- NodeJS (18 or higher)
+- VueCLI
+- Docker (for starting postgres and golang backend)
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+## Steps for starting this project
 
-## Project Setup
+### 1. Cloning project
 
-```sh
-npm install
-```
+Clone it via this link: git@github.com:DenisKantic/vuejs_demo_project_golang_postgres.git (if you are using SSH github)
 
-### Compile and Hot-Reload for Development
+If you don't use SSH connection type, you can use simple https link:
+https://github.com/DenisKantic/vuejs_demo_project_golang_postgres.git
 
-```sh
-npm run dev
-```
+### 2. Setting up project
 
-### Type-Check, Compile and Minify for Production
+After cloning the project, execute command just in case </br>
 
-```sh
-npm run build
-```
+<b>git pull origin main</b> </br>
 
-### Lint with [ESLint](https://eslint.org/)
+After that, run
 
-```sh
-npm run lint
-```
+<b>npm install</b>
+
+to install node modules.
+
+After that, start your Vue project on localhost (npm run dev)
+
+### 3. Starting up Backend and PostgreSQL
+
+Since postgres is connected in compose.yaml with docker volume "productdata", you will need to create one.
+
+<b>docker volume create productdata</b> </br>
+
+To start golang and postgres at the same time, go to the root directory of the project where is
+"compose.yaml" located and run the command "docker compose up".
+
+You can run "docker compose up --d" to run it in "detach mode", so you can have your terminal free.
+
+### 4. Creating store procedures in PostgreSQL
+
+Since I'm not importing docker volume, you will need to manually create store procedures. You will find them inside /backend/README.md.
+
+Copy and paste them inside running postgres container.
+
+### 5. Use your app
+
+If you done all of these steps, you are ready to use this application.
+
+# Walktrough in this app
+
+## Homepage
+
+In the homepage, you will see this screen (this is demo example with some created data list)
+
+![homepage](public/homeList.png)
+
+For "guest" users, they will have 2 options. One is search items by "title" or search items by "ID".
+</br>
+
+As you can see, in the list you will have title and ID, which you can use to search for it.
+
+## Dashboard page
+
+To enter to the dashboard page, you will need to click on circle shaped button on the top right navigation. You will have dropdown with two options
+
+![dropdown](public/navigation.png)
+
+- My Profile (is your dashboard)
+- Add Product (is your shortcut to create right away new product)
+
+</br>
+
+this is your dashboard page.
+
+![dashboard](public/dashboard1.png)
+
+Here you have extra options, like Add Product, Edit or Delete item from the list.
+
+## Add Product Item
+
+This is simple form for inserting values for creating your product
+
+![addProduct](public/addProduct.png)
+
+Insert your values and click submit. That's it. Very simple.
+
+If your form is okay, it will show toast notification that is successfully created and it will redirect you to the "myProfile" route, which is dashboard.
+
+If not, you will see toast notification in red with the error message.
+
+## Edit Product Item
+
+When you click in the list on the button "edit", it will redirect you to the new page with same form design, but with existing values inside the form. You can edit whatever you want. Only title or change every field.
+
+![EditProduct](public/editProduct.png)
