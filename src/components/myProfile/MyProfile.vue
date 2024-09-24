@@ -7,7 +7,7 @@
     <div class="w-full grid grid-cols-6 gap-10 grid-rows-1">
       <input
         type="text"
-        placeholder="Search here"
+        placeholder="Search here by title"
         class="input col-span-5 bg-[#f1f1fb] input-primary w-full"
       />
       <RouterLink to="/addProduct" class="btn bg-[#6870f0] text-white col-span-1 text-xl">

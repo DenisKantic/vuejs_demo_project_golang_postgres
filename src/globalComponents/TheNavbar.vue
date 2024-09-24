@@ -18,13 +18,12 @@
         </div>
         <ul
           tabindex="0"
-          class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+          class="menu menu-sm dropdown-content bg-base-100 gap-2 rounded-box z-[1] mt-3 w-52 p-2 shadow"
         >
           <li>
             <RouterLink to="myProfile" class="justify-between"> My Profile </RouterLink>
           </li>
           <li><RouterLink to="addProduct">Add Product</RouterLink></li>
-          <li><a>Logout</a></li>
         </ul>
       </div>
     </div>

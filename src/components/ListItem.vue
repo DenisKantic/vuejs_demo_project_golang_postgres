@@ -1,16 +1,15 @@
 <template>
   <div class="w-full">
-    <table class="table w-full mt-10" v-if="items.length > 0">
+    <table class="table table-fixed w-full mt-10" v-if="items.length > 0">
       <thead>
         <tr>
           <th>ID</th>
           <th>Title</th>
           <th>Price</th>
           <th>Quantity</th>
+          <th>Description</th>
           <th>Created</th>
-          <th>Updated</th>
           <th>Actions</th>
-          <!-- Added header for actions -->
         </tr>
       </thead>
       <tbody>
@@ -19,8 +18,8 @@
           <td>{{ item.title }}</td>
           <td>{{ item.price }}</td>
           <td>{{ item.quantity }}</td>
-          <td>{{ item.created_at }}</td>
-          <td>{{ item.updated_at }}</td>
+          <td>{{ formatDescription(item.description) }}</td>
+          <td>{{ formatDate(item.created_at) }}</td>
           <td>
             <button>Read More</button>
           </td>
@@ -34,6 +33,8 @@
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue'
 import axios from 'axios'
+import { formatDate } from '../helper/formatDate'
+import { formatDescription } from '../helper/formatDescription'
 
 export default defineComponent({
   name: 'ListItems',
@@ -45,8 +46,8 @@ export default defineComponent({
         description: string
         price: number
         quantity: number
+        description: string
         created_at: string
-        updated_at: string
       }>
     >([])
 
@@ -63,7 +64,9 @@ export default defineComponent({
     onMounted(fetchItems)
 
     return {
-      items
+      items,
+      formatDate, // make it visible in template
+      formatDescription
     }
   }
 })
