@@ -1,13 +1,23 @@
 <template>
   <div class="w-full">
-    <div class="mb-4">
+    <div class="grid gap-5 grid-rows-1 grid-cols-6">
       <input
         type="text"
-        v-model="searchQuery"
+        v-model="searchQuery.title"
         placeholder="Search by title"
-        class="input input-bordered w-full"
+        class="input col-span-3 bg-[#f1f1fb] input-primary w-full"
         @input="fetchItems"
       />
+      <input
+        type="number"
+        v-model="searchQuery.id"
+        placeholder="Search by ID"
+        class="input col-span-2 bg-[#f1f1fb] input-primary w-full"
+        @input="fetchItems"
+      />
+      <RouterLink to="/addProduct" class="btn bg-[#6870f0] col-span-1 text-white text-xl">
+        Add Product <i class="fa-solid fa-plus text-xl"></i>
+      </RouterLink>
     </div>
     <table class="table table-fixed w-full mt-10 text-md" v-if="items.length > 0">
       <thead>
@@ -36,7 +46,7 @@
         </tr>
       </tbody>
     </table>
-    <p v-else>No items found.</p>
+    <p v-if="noItemsFound" class="text-red-500">No items found.</p>
   </div>
 </template>
 
@@ -55,24 +65,24 @@ export default defineComponent({
       position: 'top-right'
     })
     const router = useRouter()
-    const items = ref<
-      Array<{
-        id: number
-        title: string
-        description: string
-        price: number
-        quantity: number
-        created_at: string
-      }>
-    >([])
-    const searchQuery = ref('') // New reactive property for search
+    const items = ref([])
+    const searchQuery = ref({ title: '', id: null }) // Changed to an object
+    const noItemsFound = ref(false)
 
     const fetchItems = async () => {
       try {
         const response = await axios.get('http://localhost:8080/getListItems', {
-          params: { title: searchQuery.value } // Pass the search query as a parameter
+          params: {
+            title: searchQuery.value.title,
+            id: searchQuery.value.id // Include ID in the params
+          }
         })
+
         items.value = response.data.items
+        noItemsFound.value =
+          items.value.length === 0 &&
+          (searchQuery.value.title.trim() !== '' || searchQuery.value.id !== null)
+
         console.log(response.data.items)
       } catch (error) {
         console.error('Error fetching items:', error)
@@ -80,7 +90,6 @@ export default defineComponent({
     }
 
     const editItem = (id: number) => {
-      // Handle the edit action
       console.log('Edit item with ID:', id)
       try {
         router.push({ name: 'editItem', params: { id } })
@@ -92,8 +101,8 @@ export default defineComponent({
 
     const deleteItem = async (id: number) => {
       try {
-        await axios.delete(`http://localhost:8080/deleteItem?id=${id}`) // using "ID" as query parameter
-        items.value = items.value.filter((item) => item.id !== id) // Update the local state
+        await axios.delete(`http://localhost:8080/deleteItem?id=${id}`)
+        items.value = items.value.filter((item) => item.id !== id)
         toast.success('List item deleted')
         console.log('Deleted item with ID:', id)
       } catch (error) {
@@ -107,8 +116,9 @@ export default defineComponent({
     return {
       items,
       searchQuery,
-      fetchItems, // Return fetchItems to be callable on input event
+      fetchItems,
       editItem,
+      noItemsFound,
       deleteItem,
       formatDate,
       formatDescription
