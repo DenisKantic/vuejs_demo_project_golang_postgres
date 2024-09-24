@@ -38,7 +38,7 @@
         </tr>
       </tbody>
     </table>
-    <p v-if="noItemsFound" class="text-red-500">No items found.</p>
+    <p v-if="noItemsFound" class="text-red-500 py-5">No items found.</p>
   </div>
 </template>
 
