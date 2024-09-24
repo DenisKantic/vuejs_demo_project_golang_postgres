@@ -1,16 +1,30 @@
 <template>
   <div class="w-full">
-    <table class="table w-full mt-10" v-if="items.length > 0">
+    <div class="grid gap-5 grid-rows-1 grid-cols-6">
+      <input
+        type="text"
+        v-model="searchQuery.title"
+        placeholder="Search by title"
+        class="input col-span-3 bg-[#f1f1fb] input-primary w-full"
+        @input="fetchItems"
+      />
+      <input
+        type="number"
+        v-model="searchQuery.id"
+        placeholder="Search by ID"
+        class="input col-span-3 bg-[#f1f1fb] input-primary w-full"
+        @input="fetchItems"
+      />
+    </div>
+    <table class="table table-fixed w-full mt-10 text-md" v-if="items.length > 0">
       <thead>
         <tr>
           <th>ID</th>
           <th>Title</th>
           <th>Price</th>
           <th>Quantity</th>
+          <th>Description</th>
           <th>Created</th>
-          <th>Updated</th>
-          <th>Actions</th>
-          <!-- Added header for actions -->
         </tr>
       </thead>
       <tbody>
@@ -19,42 +33,43 @@
           <td>{{ item.title }}</td>
           <td>{{ item.price }}</td>
           <td>{{ item.quantity }}</td>
-          <td>{{ item.created_at }}</td>
-          <td>{{ item.updated_at }}</td>
-          <td>
-            <button>Read More</button>
-          </td>
+          <td>{{ formatDescription(item.description) }}</td>
+          <td>{{ formatDate(item.created_at) }}</td>
         </tr>
       </tbody>
     </table>
-    <p v-else>No items found.</p>
+    <p v-if="noItemsFound" class="text-red-500 py-5">No items found.</p>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from 'vue'
 import axios from 'axios'
+import { formatDescription } from '../helper/formatDescription'
+import { formatDate } from '../helper/formatDate'
 
 export default defineComponent({
   name: 'ListItems',
   setup() {
-    const items = ref<
-      Array<{
-        id: number
-        title: string
-        description: string
-        price: number
-        quantity: number
-        created_at: string
-        updated_at: string
-      }>
-    >([])
+    const items = ref([])
+    const searchQuery = ref({ title: '', id: null }) // Changed to an object
+    const noItemsFound = ref(false)
 
     const fetchItems = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/getListItems') // Adjust the URL as needed
+        const response = await axios.get('http://localhost:8080/getListItems', {
+          params: {
+            title: searchQuery.value.title,
+            id: searchQuery.value.id // Include ID in the params
+          }
+        })
+
         items.value = response.data.items
-        console.log(response.data.items) // Assuming your API response directly contains the item array
+        noItemsFound.value =
+          items.value.length === 0 &&
+          (searchQuery.value.title.trim() !== '' || searchQuery.value.id !== null)
+
+        console.log(response.data.items)
       } catch (error) {
         console.error('Error fetching items:', error)
       }
@@ -63,7 +78,12 @@ export default defineComponent({
     onMounted(fetchItems)
 
     return {
-      items
+      items,
+      searchQuery,
+      fetchItems,
+      noItemsFound,
+      formatDate,
+      formatDescription
     }
   }
 })
